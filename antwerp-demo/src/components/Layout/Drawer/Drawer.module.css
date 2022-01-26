@@ -1,0 +1,13 @@
+@media only screen and (max-width: 800px) {
+  .side__drawer {
+    display: none;
+  }
+  .test {
+    width: 100% !important;
+  }
+}
+
+/* .drawer__link:hover .drawer__link{
+      padding-left: 0.5rem;
+      transition: 0.5s ease-in-out;
+  } */

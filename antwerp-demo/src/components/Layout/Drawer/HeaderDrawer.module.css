@@ -1,0 +1,88 @@
+.nav__menu {
+  color: #2cb1bc;
+  cursor: pointer;
+}
+
+.nav__h2 {
+  font-weight: 400;
+  letter-spacing: 3px;
+  font-size: 2rem;
+  color: #627d98;
+}
+
+.nav__button {
+  background: #2cb1bc;
+  color: #ffffff;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.4rem;
+  letter-spacing: 1px;
+  gap: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: inherit;
+  border: none;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
+  align-items: center;
+  transition: 0.3s ease-in-out;
+}
+.nav__button:hover {
+  background-color: #0a6c74;
+}
+.popper {
+  z-index: 1100;
+  width: 50px;
+  display: flex;
+  align-items: 5px;
+  width: 9.9em;
+  border-radius: 5px;
+  color: #2cb1bc;
+  background-color: #bef8fd;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-top:10px solid #ffffff ;
+}
+.nav__button__user__name{
+    white-space: nowrap; 
+    width: 5.3rem; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+@media only screen and (max-width: 300px) {
+    .nav__button__user__name{
+        width: 0.5rem; 
+    }
+    .popper {
+        width: 5.2rem;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+  .nav_menu_web {
+    display: none !important;
+  }
+
+  .nav_menu_mobile {
+    display: block !important;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .nav_menu_web {
+    display: block !important;
+  }
+
+  .nav_menu_mobile {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+    .nav__h2 {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+  }

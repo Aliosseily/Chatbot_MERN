@@ -1,0 +1,28 @@
+.input{
+
+    width: 268px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1px solid #c5c5c5;
+    padding:1rem;
+    font-size: 1rem;
+    outline: none;
+    position: absolute;
+    bottom: 0;
+}
+.message__Sender{
+  font-weight: 600;
+}
+.message__content,.message__Sender{
+margin: 0;
+}
+
+.loader{
+  width: 20px !important;
+  height: 20px !important;
+  position: absolute;
+  bottom: 3.5%;
+  right: 5%;
+  z-index: 1;
+}

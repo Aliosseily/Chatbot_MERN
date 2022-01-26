@@ -1,0 +1,18 @@
+.input{
+
+    width: 280px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1px solid;
+    padding:10px;
+    outline: none;
+    position: absolute;
+    bottom: 0;
+}
+.message__Sender{
+  font-weight: 600;
+}
+.message__content,.message__Sender{
+margin: 0;
+}
