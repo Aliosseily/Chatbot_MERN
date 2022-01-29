@@ -10,6 +10,7 @@ import AuthContext from "./store/auth-context";
 import AddSales from "./pages/sales/AddSales";
 import Intents from "./pages/Intents/Intents";
 import AddIntent from "./pages/Intents/AddIntent";
+import AllJobs from "./pages/jobs/AllJobs";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -32,6 +33,8 @@ function App() {
             <Route path="/sales/:id"  element={<SalesInfo />} />
             <Route path="/intents"  element={<Intents />} />
             <Route path="/addintent"  element={<AddIntent />} />
+            <Route path="/all-jobs"  element={<AllJobs />} />
+
           </Route>
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>

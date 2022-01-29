@@ -16,6 +16,7 @@ const salesRoutes = require("./routes/monthly-sales");
 const dialogflowRoutes = require("./routes/dialogflow");
 const chatRoutes = require("./routes/chat");
 const intentRoutes = require("./routes/intent");
+const jobsRoutes = require("./routes/jobs");
 
 app.use(cors());
 app.options('*', cors());
@@ -28,6 +29,7 @@ app.use(`${api}/sales`, salesRoutes);
 app.use(`${api}/dialog`, dialogflowRoutes);
 app.use(`${api}/chat`, chatRoutes);
 app.use(`${api}/intent`, intentRoutes);
+app.use(`${api}/jobs`, jobsRoutes);
 
 
 // add mongoose connection before starting the server

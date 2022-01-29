@@ -1,14 +1,13 @@
-import React, { Fragment } from 'react';
-import classes from "./Input.module.css"
+import React, { Fragment } from "react";
+import classes from "./Input.module.css";
 
 const GeneralInput = (props) => {
   return (
-  <Fragment>
+    <Fragment>
       <label>{props.label}</label>
-  <input {...props} className={classes.input} />
-  </Fragment>
-  )
-
+      <input {...props} className={classes.input} />
+    </Fragment>
+  );
 };
 
 export default GeneralInput;
