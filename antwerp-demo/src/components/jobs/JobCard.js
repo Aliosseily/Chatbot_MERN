@@ -25,6 +25,7 @@ const JobCard = (props) => {
                   alignItems: "center",
                   color: "#ffffff",
                   fontSize: "2rem",
+                  textTransform: "capitalize"
                 },
               }}
             >
@@ -51,7 +52,7 @@ const JobCard = (props) => {
             <div>
               <section>
                 <BusinessCenterIcon className={classes.paper__icon} />
-                <span>{type}</span>
+                <span className={classes.paper__type}>{type}</span>
               </section>
             </div>
             <div>
@@ -61,7 +62,7 @@ const JobCard = (props) => {
                 ${classes[
                     status === 'pending' ? "paper__status--pending" :
                     status === 'interview' ? "paper__status--interview" :
-                    status === 'decline' ? "paper__status--decline" :
+                    status === 'declined' ? "paper__status--decline" :
                     null]}`}
               >
                 {status}

@@ -10,6 +10,7 @@
     margin: 0 2rem;
     line-height: 1.5rem; 
     letter-spacing: 2px;
+    text-transform: capitalize;
 }
 
 .paper__title h3,
@@ -57,6 +58,9 @@
 .paper__status--decline{
     background-color: #FFEEEE;
     color: #D66A6A;
+}
+.paper__type{
+    text-transform: capitalize;
 }
 
 .action{
