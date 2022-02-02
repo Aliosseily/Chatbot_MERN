@@ -2,28 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { Jobs } = require("../models/jobs");
 
-// router.get("/", async (req, res) => {
-//   const query = req.query.status;
-//   console.log("QUERY", query);
-//   try {
-//     let jobsList;
-//     if(req.query.status === "all" && req.query.type ==="all"){
-//       jobsList = await Jobs.find();
-//     }
-//     else{
-//       jobsList = await Jobs.find({ status: req.query.status, type: req.query.type});
-//     }
-//     if (!jobsList) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Cannot load jobs" });
-//     }
-//     return res.status(200).json({ success: true, data: jobsList });
-//   } catch ({ message }) {
-//     return res.status(500).json({ success: false, message: message });
-//   }
-// });
-
 router.get("/", async (req, res) => {
   try {
     const jobsCount = await Jobs.countDocuments();
@@ -45,12 +23,13 @@ router.get("/", async (req, res) => {
     //     limit: limit
     //   }
     // }
-
+   //https://github.com/WebDevSimplified/Paginated-API-Express/blob/master/server.js
     let jobsList;
     const sortBy = req.query.sort;
+    var regex = new RegExp(req.query.search, 'i');
     if (req.query.status === "all" && req.query.type === "all") {
 
-      jobsList = await Jobs.find()
+      jobsList = await Jobs.find({position:regex})
         .limit(limit)
         .skip(startIndex)
         .sort(
@@ -68,6 +47,7 @@ router.get("/", async (req, res) => {
       jobsList = await Jobs.find({
         status: req.query.status,
         type: req.query.type,
+        position:regex
       })
         .limit(limit)
         .skip(startIndex)
@@ -85,6 +65,7 @@ router.get("/", async (req, res) => {
     } else if (req.query.status === "all" && req.query.type !== "all") {
       jobsList = await Jobs.find({
         type: req.query.type,
+        position:regex
       })
         .limit(limit)
         .skip(startIndex)
@@ -102,6 +83,7 @@ router.get("/", async (req, res) => {
     } else if (req.query.status !== "all" && req.query.type === "all") {
       jobsList = await Jobs.find({
         status: req.query.status,
+        position:regex
       })
         .limit(limit)
         .skip(startIndex)

@@ -34,8 +34,9 @@ const sort = [
 const AllJobs = () => {
   const { isLoading, error, sendRequest } = useAxios();
   const [jobs, setJobs] = useState([]);
-  const [statusyy, setStatusyy] = useState("all");
-  const [typeyy, setTypeyy] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState("latest");
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState();
@@ -43,28 +44,28 @@ const AllJobs = () => {
   useEffect(() => {
     sendRequest(
       {
-        url: `http://localhost:4000/api/v1/jobs?page=${page}&status=${statusyy}&type=${typeyy}&sort=${sortBy}`,
-        // url: `http://localhost:4000/api/v1/jobs?status=${statusyy}&type=${typeyy}`,
-      }, //      setChatlist((prevState) => [...prevState, conversation]);
+        url: `http://localhost:4000/api/v1/jobs?page=${page}&status=${statusFilter}&type=${typeFilter}&sort=${sortBy}&search=${search}`,
+      }, 
       (data) => {
-        console.log(data);
         setJobs(data?.data?.data);
         setPageCount(data?.data?.pages);
       }
     );
-  }, [sendRequest, page, statusyy, typeyy, sortBy]);
+  }, [sendRequest, page, statusFilter, typeFilter, sortBy, search]);
 
   const statusFilterHandler = (e) => {
-    setStatusyy(e.target.value);
+    setStatusFilter(e.target.value);
   };
   const typeFilterHandler = (e) => {
-    setTypeyy(e.target.value);
+    setTypeFilter(e.target.value);
   };
   const sortHandler = (e) => {
     setSortBy(e.target.value);
   };
+  const searchHandler = (e) => {
+    setSearch(e.target.value)
+  }
   const handleChange = (event, value) => {
-    console.log(value);
     setPage(value);
   };
 
@@ -74,7 +75,7 @@ const AllJobs = () => {
         <h2>Search Form</h2>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6} lg={3}>
-            <GeneralInput label="Search" type="text" name="search" />
+            <GeneralInput onChange={searchHandler} label="Search" type="text" name="search" />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <SelectOptions
