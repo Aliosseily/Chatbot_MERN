@@ -18,8 +18,10 @@ router.get("/", async (req, res) => {
 
 router.post("/getresponse", async (req, res) => {
   try {
+    var regex = new RegExp(req.body.request, 'i');
+       console.log("regex",regex);
     const response = await Intent.find(
-      { request: req.body.request },
+      { request: regex },
       { _id: 0, request: 1, response: 1 }
     );
     const result =
