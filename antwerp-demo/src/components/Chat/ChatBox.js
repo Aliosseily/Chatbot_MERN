@@ -7,6 +7,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import useAxios from "../../hooks/use-axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import SendIcon from "@mui/icons-material/Send";
+import $ from "jquery";
 
 const ChatBox = () => {
   const userLoacal = JSON.parse(localStorage.getItem("user"));
@@ -75,6 +76,7 @@ const ChatBox = () => {
       content: data.data.data[0].response,
     };
     setChatlist((prevState) => [...prevState, responseConversation]);
+    scrollDown();
     postQuery(requestConversation, responseConversation);
   };
   // post chat of user and bot to db
@@ -97,6 +99,11 @@ const ChatBox = () => {
     }
   };
 
+  const scrollDown = () => {
+    const objControl = document.querySelector('.scrollingContainer');
+    objControl.scrollTop = objControl.scrollHeight;
+  }
+
   return (
     <div>
       <Menu
@@ -106,7 +113,7 @@ const ChatBox = () => {
         onClose={handleClose}
       >
         {error && <p className="errorText">{error}</p>}
-        <Box
+        <Box className="scrollingContainer"
           color={"#858585"}
           width={300}
           height={400}
