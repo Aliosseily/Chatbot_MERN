@@ -119,7 +119,7 @@ router.get("/:id", async (req, res) => {
     if (!job) {
       return res.status(404).json({ success: false, message: "job not found" });
     }
-    return res.status(200).send({ success: true, data: job });
+    return res.status(200).json({ success: true, data: job });
   } catch ({ message }) {
     return res.status(500).json({ success: false, message: message });
   }
@@ -139,7 +139,7 @@ router.post("/", async (req, res) => {
     if (!job) {
       return res.status(404).send("The job cannot be created!");
     }
-    return res.status(200).send({ success: true, data: job });
+    return res.status(200).json({ success: true, data: job });
   } catch ({ message }) {
     return res.status(500).json({ success: false, message: message });
   }
@@ -166,14 +166,13 @@ router.put("/:id", async (req, res) => {
     if (!updatedJob) {
       return res.status(404).send("The job cannot be updated!");
     }
-    return res.status(200).send({ success: false, data: updatedJob });
+    return res.status(200).json({ success: false, data: updatedJob });
   } catch ({ message }) {
     return res.status(500).json({ success: false, message: message });
   }
 });
 
 router.delete("/:id",async(req, res) => {
-  console.log("JI")
   try {
     const deletedJob = await Job.findByIdAndRemove(req.params.id);
     if (!deletedJob) {
