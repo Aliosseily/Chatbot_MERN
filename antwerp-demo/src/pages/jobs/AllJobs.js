@@ -1,13 +1,11 @@
 import { Grid } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import GeneralInput from "../../components/Inputs/GeneralInput";
-import Input from "../../components/Inputs/Input";
 import SelectOptions from "../../components/Inputs/SelectOptions";
 import JobCard from "../../components/jobs/JobCard";
 import Loader from "../../components/Layout/Loader";
 import PaperWrapper from "../../components/Layout/Paper";
 import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
 import useAxios from "../../hooks/use-axios";
 import { Box } from "@mui/system";
 
@@ -36,7 +34,7 @@ const AllJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("latest");
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState();
@@ -45,7 +43,7 @@ const AllJobs = () => {
     sendRequest(
       {
         url: `http://localhost:4000/api/v1/jobs?page=${page}&status=${statusFilter}&type=${typeFilter}&sort=${sortBy}&search=${search}`,
-      }, 
+      },
       (data) => {
         setJobs(data?.data?.data);
         setPageCount(data?.data?.pages);
@@ -63,10 +61,26 @@ const AllJobs = () => {
     setSortBy(e.target.value);
   };
   const searchHandler = (e) => {
-    setSearch(e.target.value)
-  }
+    setSearch(e.target.value);
+  };
   const handleChange = (event, value) => {
     setPage(value);
+  };
+
+  const deleteJobHandler = (jobId) => {
+    if (window.confirm("Are you want to delete this item ?")) {
+      sendRequest(
+        {
+          url: `http://localhost:4000/api/v1/jobs/${jobId}`,
+          method: "DELETE",
+        },
+        (data) => {
+          setJobs((prevState) =>
+            prevState.filter((job) => job._id !== data?.data?.data?._id)
+          );
+        }
+      );
+    }
   };
 
   return (
@@ -75,7 +89,12 @@ const AllJobs = () => {
         <h2>Search Form</h2>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6} lg={3}>
-            <GeneralInput onChange={searchHandler} label="Search" type="text" name="search" />
+            <GeneralInput
+              onChange={searchHandler}
+              label="Search"
+              type="text"
+              name="search"
+            />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <SelectOptions
@@ -92,25 +111,33 @@ const AllJobs = () => {
             />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <SelectOptions onChange={sortHandler} label="Sort" options={sort} />
+            <SelectOptions
+              onChange={sortHandler}
+              label="Sort "
+              options={sort}
+            />
           </Grid>
         </Grid>
       </PaperWrapper>
-      <Grid container spacing={2} marginTop={5}>
+      <Grid container spacing={2} marginTop={1}>
         <Grid item xs={12} md={12} lg={12}>
           {isLoading && <Loader />}
           <h2>{jobs.length} Job Found</h2>
+          {error && <p className="errorText">{error}</p>}
         </Grid>
         {jobs.map((job) => {
           return (
             <JobCard
+              key={job._id}
               data={{
+                id: job._id,
                 position: job.position,
                 company: job.company,
                 location: job.location,
                 status: job.status,
                 type: job.type,
                 date: job.date,
+                deleteJob: deleteJobHandler,
               }}
             />
           );

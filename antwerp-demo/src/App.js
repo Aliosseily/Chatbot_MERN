@@ -11,6 +11,8 @@ import AddSales from "./pages/sales/AddSales";
 import Intents from "./pages/Intents/Intents";
 import AddIntent from "./pages/Intents/AddIntent";
 import AllJobs from "./pages/jobs/AllJobs";
+import AddJob from "./pages/jobs/AddJob";
+import EditJob from "./pages/jobs/EditJob";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -34,7 +36,8 @@ function App() {
             <Route path="/intents"  element={<Intents />} />
             <Route path="/addintent"  element={<AddIntent />} />
             <Route path="/all-jobs"  element={<AllJobs />} />
-
+            <Route path="/add-job"  element={<AddJob />} />
+            <Route path="/edit-job/:id"  element={<EditJob />} />
           </Route>
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>

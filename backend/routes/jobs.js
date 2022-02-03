@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { Jobs } = require("../models/jobs");
+const { Job } = require("../models/jobs");
 
 router.get("/", async (req, res) => {
   try {
-    const jobsCount = await Jobs.countDocuments();
+    const jobsCount = await Job.countDocuments();
     const limit = 4;
     const page = +req.query.page;
     const startIndex = (page - 1) * limit;
@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
     var regex = new RegExp(req.query.search, 'i');
     if (req.query.status === "all" && req.query.type === "all") {
 
-      jobsList = await Jobs.find({position:regex})
+      jobsList = await Job.find({position:regex})
         .limit(limit)
         .skip(startIndex)
         .sort(
@@ -44,7 +44,7 @@ router.get("/", async (req, res) => {
             : null
         )
     } else if (req.query.status !== "all" && req.query.type !== "all") {
-      jobsList = await Jobs.find({
+      jobsList = await Job.find({
         status: req.query.status,
         type: req.query.type,
         position:regex
@@ -63,7 +63,7 @@ router.get("/", async (req, res) => {
             : null
         );
     } else if (req.query.status === "all" && req.query.type !== "all") {
-      jobsList = await Jobs.find({
+      jobsList = await Job.find({
         type: req.query.type,
         position:regex
       })
@@ -81,7 +81,7 @@ router.get("/", async (req, res) => {
             : null
         );
     } else if (req.query.status !== "all" && req.query.type === "all") {
-      jobsList = await Jobs.find({
+      jobsList = await Job.find({
         status: req.query.status,
         position:regex
       })
@@ -112,5 +112,79 @@ router.get("/", async (req, res) => {
     return res.status(500).json({ success: false, message: message });
   }
 });
+
+router.get("/:id", async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+      return res.status(404).json({ success: false, message: "job not found" });
+    }
+    return res.status(200).send({ success: true, data: job });
+  } catch ({ message }) {
+    return res.status(500).json({ success: false, message: message });
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    let job = new Job({
+      position: req.body.position,
+      company: req.body.company,
+      location: req.body.location,
+      status: req.body.status,
+      type: req.body.type,
+    });
+    job = await job.save();
+
+    if (!job) {
+      return res.status(404).send("The job cannot be created!");
+    }
+    return res.status(200).send({ success: true, data: job });
+  } catch ({ message }) {
+    return res.status(500).json({ success: false, message: message });
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+        return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    const updatedJob = await Job.findByIdAndUpdate(
+      req.params.id,
+      {
+        position: req.body.position,
+        company: req.body.company,
+        location: req.body.location,
+        status: req.body.status,
+        type: req.body.type
+      },
+      { new: true }
+    );
+    if (!updatedJob) {
+      return res.status(404).send("The job cannot be updated!");
+    }
+    return res.status(200).send({ success: false, data: updatedJob });
+  } catch ({ message }) {
+    return res.status(500).json({ success: false, message: message });
+  }
+});
+
+router.delete("/:id",async(req, res) => {
+  console.log("JI")
+  try {
+    const deletedJob = await Job.findByIdAndRemove(req.params.id);
+    if (!deletedJob) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Job not found!" });
+    }
+    return res.status(200).json({ success: true, data: deletedJob });
+  } catch ({ message }) {
+    return res.status(500).json({ success: false, message: message });
+  }
+})
 
 module.exports = router;

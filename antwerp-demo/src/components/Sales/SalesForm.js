@@ -69,7 +69,6 @@ const SalesForm = (props) => {
               delete newobj.cost;
               delete newobj.year;
               for (const property in newobj) {
-                console.log(`${property}: ${req[property]}`);
                 monthsSales.push({
                   month: `${property}`,
                   amount: `${req[property]}`,

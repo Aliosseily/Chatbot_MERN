@@ -6,6 +6,7 @@ import AddchartIcon from '@mui/icons-material/Addchart';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 import BallotOutlinedIcon from '@mui/icons-material/BallotOutlined';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import DrawerLink from "./DrawerLink";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -26,6 +27,7 @@ const SideDrawer = () => {
         <DrawerLink link="/sales" title="Manage sales" icon={<AddchartIcon fontSize="large"/>}/>
         <DrawerLink link="/intents" title="Manage intents" icon={<ChatOutlinedIcon fontSize="large"/>}/>
         <DrawerLink link="/all-jobs" title="All Jobs" icon={<BallotOutlinedIcon fontSize="large"/>}/>
+        <DrawerLink link="/add-job" title="Add Job" icon={<AddBoxOutlinedIcon fontSize="large"/>}/>
 
       </List>
     </Fragment>

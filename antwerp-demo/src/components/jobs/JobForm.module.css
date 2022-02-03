@@ -1,0 +1,13 @@
+.submit{
+    margin: 1.85rem 0;
+}
+
+.clearBtn{
+    margin: 1.85rem 0;
+    background-color: #627d98;
+}
+
+.clearBtn:hover{
+    background-color: #000000;
+}
+  

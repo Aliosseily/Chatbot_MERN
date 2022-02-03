@@ -7,7 +7,7 @@ import classes from "./Drawer.module.css";
 import HeaderDrawer from "./HeaderDrawer";
 import SideDrawer from "./SideDrawer";
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({

@@ -1,4 +1,4 @@
-import { Grid, Link, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { Fragment } from "react";
 import classes from "./JobCard.module.css";
@@ -6,9 +6,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const JobCard = (props) => {
-  const { position, company, location, status, type, date } = props.data;
+  const {id, position, company, location, status, type, date, deleteJob, editJob } = props.data;
   return (
     <Fragment>
       <Grid item xs={12} md={6} lg={6}>
@@ -70,9 +71,9 @@ const JobCard = (props) => {
             </div>
             <div className={classes.actions}>
               <span className={`${classes.action} ${classes["action__edit"]}`}>
-                <Link to="/">Edit</Link>
+                <Link to={`/edit-job/${id}`}>Edit</Link>
               </span>
-              <button
+              <button onClick={() => {deleteJob(id)}}
                 className={`${classes.action}  ${classes["action__delete"]}`}
               >
                 Delete
