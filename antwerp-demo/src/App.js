@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import HomePage from "./pages/HomePage";
@@ -13,9 +13,29 @@ import AddIntent from "./pages/Intents/AddIntent";
 import AllJobs from "./pages/jobs/AllJobs";
 import AddJob from "./pages/jobs/AddJob";
 import EditJob from "./pages/jobs/EditJob";
+import jwt_decode from "jwt-decode";
 
 function App() {
   const authCtx = useContext(AuthContext);
+  useEffect(() => {
+    console.log("RUUUUUUUUUUN")
+
+    const token = localStorage.getItem("token");
+    if(token !== null) {
+    console.log("token ", token);
+    let decodedToken = jwt_decode(token);
+    console.log("Decoded Token ", decodedToken);
+    
+    console.log("today ", new Date().getTime());
+    console.log("exppp ", decodedToken.exp * 1000);
+    if( decodedToken.exp * 1000 < new Date().getTime() ){
+      console.log("Token expired.");
+    }
+    else{
+      console.log("Valid token"); 
+    }
+  }
+  })
   return (
     <Fragment>
       {!authCtx.isLoggedIn && (

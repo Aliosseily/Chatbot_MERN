@@ -102,6 +102,7 @@ const ChatBox = () => {
   const scrollDown = () => {
     const objControl = document.querySelector('.scrollingContainer');
     objControl.scrollTop = objControl.scrollHeight;
+    //scrollTop
   }
 
   return (

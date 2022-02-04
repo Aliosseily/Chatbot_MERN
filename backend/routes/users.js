@@ -35,7 +35,7 @@ router.post("/register", async (req, res) => {
         .status(404)
         .send({ success: false, message: "The user cannot be registered!" });
     }
-    const token = jwt.sign({}, secret, { expiresIn: "1d" });
+    const token = jwt.sign({}, secret, { expiresIn: "24h" });
     res.status(200).send({
       id: user._id,
       name: user.name,
