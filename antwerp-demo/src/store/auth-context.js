@@ -18,19 +18,17 @@ export const AuthContextProvider = (props) => {
 
   const userIsLoggedIn = !!token;
   const onLoginSuccess = (response) => {
-    console.log("DONE", response);
-    const { token,id,name,user  } = response?.data;
+    const { token, id, name, user } = response?.data;
     localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify([{id,name,user}]));
+    localStorage.setItem("user", JSON.stringify([{ id, name, user }]));
     setToken(token);
     navigate("/", { replace: true });
   };
 
   const onSignupSuccess = (response) => {
-    console.log("REGISTERE DONE ", response);
-    const { token,id, name, user } = response?.data;
+    const { token, id, name, user } = response?.data;
     localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify([{id,name,user}]));
+    localStorage.setItem("user", JSON.stringify([{ id, name, user }]));
 
     setToken(token);
     navigate("/", { replace: true });

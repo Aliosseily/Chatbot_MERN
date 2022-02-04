@@ -50,7 +50,6 @@ const AuthForm = () => {
         initialValues={INITIAL_FORM_STATE}
         validationSchema={FORM_VALIDATION}
         onSubmit={(values) => {
-          console.log(values);
           isLogin ? authCtx.onLogIn(values) : authCtx.onSignUp(values);
         }}
         //  validateOnBlur={false}
@@ -79,8 +78,10 @@ const AuthForm = () => {
               </button>
               <section className={classes.register}>
                 <p>
-                {isLogin ? "Not a member yet?  " : "Already a member? "}
-                  <span onClick={switchAuthHandler}>{!isLogin ? " Login" : " Register"}</span>
+                  {isLogin ? "Not a member yet?  " : "Already a member? "}
+                  <span onClick={switchAuthHandler}>
+                    {!isLogin ? " Login" : " Register"}
+                  </span>
                 </p>
               </section>
             </section>

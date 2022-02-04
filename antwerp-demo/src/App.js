@@ -18,24 +18,15 @@ import jwt_decode from "jwt-decode";
 function App() {
   const authCtx = useContext(AuthContext);
   useEffect(() => {
-    console.log("RUUUUUUUUUUN")
-
     const token = localStorage.getItem("token");
-    if(token !== null) {
-    console.log("token ", token);
-    let decodedToken = jwt_decode(token);
-    console.log("Decoded Token ", decodedToken);
-    
-    console.log("today ", new Date().getTime());
-    console.log("exppp ", decodedToken.exp * 1000);
-    if( decodedToken.exp * 1000 < new Date().getTime() ){
-      console.log("Token expired.");
+    if (token !== null) {
+      let decodedToken = jwt_decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
     }
-    else{
-      console.log("Valid token"); 
-    }
-  }
-  })
+  });
   return (
     <Fragment>
       {!authCtx.isLoggedIn && (
@@ -48,16 +39,16 @@ function App() {
       {authCtx.isLoggedIn && (
         <Routes>
           <Route path="/" element={<HomePage />}>
-            <Route path="/dashboard"  element={<Dashboard />} />
-            <Route path="/profile"  element={<Profile />} />
-            <Route path="/sales"  element={<ManageSales />} />
-            <Route path="/addSales"  element={<AddSales />} />
-            <Route path="/sales/:id"  element={<SalesInfo />} />
-            <Route path="/intents"  element={<Intents />} />
-            <Route path="/addintent"  element={<AddIntent />} />
-            <Route path="/all-jobs"  element={<AllJobs />} />
-            <Route path="/add-job"  element={<AddJob />} />
-            <Route path="/edit-job/:id"  element={<EditJob />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/sales" element={<ManageSales />} />
+            <Route path="/addSales" element={<AddSales />} />
+            <Route path="/sales/:id" element={<SalesInfo />} />
+            <Route path="/intents" element={<Intents />} />
+            <Route path="/addintent" element={<AddIntent />} />
+            <Route path="/all-jobs" element={<AllJobs />} />
+            <Route path="/add-job" element={<AddJob />} />
+            <Route path="/edit-job/:id" element={<EditJob />} />
           </Route>
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
