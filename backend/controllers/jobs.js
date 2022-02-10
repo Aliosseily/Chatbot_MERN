@@ -1,114 +1,159 @@
 const { Job } = require("../models/jobs");
 
 const getAllJobs = async (req, res) => {
+  console.log("enter");
   try {
-    const jobsCount = await Job.countDocuments();
+    const { page, sort, search, type, status } = req.query;
+    const pageNumber = +page || 1;
     const limit = 4;
-    const page = +req.query.page;
-    const startIndex = (page - 1) * limit;
-    // const endIndex = page * limit
-    // const results = {};
-    // if (endIndex < jobsCount) {
-    //   results.next = {
-    //     page: page + 1,
-    //     limit: limit
-    //   }
-    // }
-
-    // if (startIndex > 0) {
-    //   results.previous = {
-    //     page: page - 1,
-    //     limit: limit
-    //   }
-    // }
-    //https://github.com/WebDevSimplified/Paginated-API-Express/blob/master/server.js
-    let jobsList;
-    const sortBy = req.query.sort;
-    var regex = new RegExp(req.query.search, "i");
-    if (req.query.status === "all" && req.query.type === "all") {
-      jobsList = await Job.find({ position: regex })
-        .limit(limit)
-        .skip(startIndex)
-        .sort(
-          sortBy === "a-z"
-            ? { position: 1 }
-            : sortBy === "z-a"
-            ? { position: -1 }
-            : sortBy === "latest"
-            ? { date: -1 }
-            : sortBy === "oldest"
-            ? { date: 1 }
-            : null
-        );
-    } else if (req.query.status !== "all" && req.query.type !== "all") {
-      jobsList = await Job.find({
-        status: req.query.status,
-        type: req.query.type,
-        position: regex,
-      })
-        .limit(limit)
-        .skip(startIndex)
-        .sort(
-          sortBy === "a-z"
-            ? { position: 1 }
-            : sortBy === "z-a"
-            ? { position: -1 }
-            : sortBy === "latest"
-            ? { date: -1 }
-            : sortBy === "oldest"
-            ? { date: 1 }
-            : null
-        );
-    } else if (req.query.status === "all" && req.query.type !== "all") {
-      jobsList = await Job.find({
-        type: req.query.type,
-        position: regex,
-      })
-        .limit(limit)
-        .skip(startIndex)
-        .sort(
-          sortBy === "a-z"
-            ? { position: 1 }
-            : sortBy === "z-a"
-            ? { position: -1 }
-            : sortBy === "latest"
-            ? { date: -1 }
-            : sortBy === "oldest"
-            ? { date: 1 }
-            : null
-        );
-    } else if (req.query.status !== "all" && req.query.type === "all") {
-      jobsList = await Job.find({
-        status: req.query.status,
-        position: regex,
-      })
-        .limit(limit)
-        .skip(startIndex)
-        .sort(
-          sortBy === "a-z"
-            ? { position: 1 }
-            : sortBy === "z-a"
-            ? { position: -1 }
-            : sortBy === "latest"
-            ? { date: -1 }
-            : sortBy === "oldest"
-            ? { date: 1 }
-            : null
-        );
+    const skip = (pageNumber - 1) * limit;
+    const jobsCount = await Job.countDocuments();
+    const queryObject = {};
+    if (type) {
+      queryObject.type = type;
     }
-    const pages = Math.ceil(jobsCount / limit);
-    if (!jobsList) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Cannot load jobs" });
+    if (status) {
+      queryObject.status = status;
     }
+    if (type === "all") {
+      delete queryObject.type;
+    }
+    if (status === "all") {
+      delete queryObject.status;
+    }
+    if (search) {
+      queryObject.position = { $regex: search, $options: "i" };
+    }
+    console.log("queryObject", queryObject);
+    let jobsList = Job.find(queryObject);
+    if (sort) {
+      jobsList = jobsList.sort(sort);
+    }
+    jobsList = jobsList.skip(skip).limit(limit);
+    const finalResult = await jobsList;
+    // const jobsCount = finalResult.length;
+     const pages = Math.ceil(jobsCount / limit);
     return res
       .status(200)
-      .json({ success: true, data: jobsList, pages: pages });
+      .json({
+        success: true,
+        data: finalResult,
+        pages: pages,
+      });
   } catch ({ message }) {
     return res.status(500).json({ success: false, message: message });
   }
 };
+
+// const getAllJobs = async (req, res) => {
+//   try {
+//     const jobsCount = await Job.countDocuments();
+//     const limit = 4;
+//     const page = +req.query.page;
+//     const startIndex = (page - 1) * limit;
+//     // const endIndex = page * limit
+//     // const results = {};
+//     // if (endIndex < jobsCount) {
+//     //   results.next = {
+//     //     page: page + 1,
+//     //     limit: limit
+//     //   }
+//     // }
+
+//     // if (startIndex > 0) {
+//     //   results.previous = {
+//     //     page: page - 1,
+//     //     limit: limit
+//     //   }
+//     // }
+//     //https://github.com/WebDevSimplified/Paginated-API-Express/blob/master/server.js
+//     let jobsList;
+//     const sortBy = req.query.sort;
+//     var regex = new RegExp(req.query.search, "i");
+//     if (req.query.status === "all" && req.query.type === "all") {
+//       jobsList = await Job.find({ position: regex })
+//         .limit(limit)
+//         .skip(startIndex)
+//         .sort(
+//           sortBy === "a-z"
+//             ? { position: 1 }
+//             : sortBy === "z-a"
+//             ? { position: -1 }
+//             : sortBy === "latest"
+//             ? { date: -1 }
+//             : sortBy === "oldest"
+//             ? { date: 1 }
+//             : null
+//         );
+//     } else if (req.query.status !== "all" && req.query.type !== "all") {
+//       jobsList = await Job.find({
+//         status: req.query.status,
+//         type: req.query.type,
+//         position: regex,
+//       })
+//         .limit(limit)
+//         .skip(startIndex)
+//         .sort(
+//           sortBy === "a-z"
+//             ? { position: 1 }
+//             : sortBy === "z-a"
+//             ? { position: -1 }
+//             : sortBy === "latest"
+//             ? { date: -1 }
+//             : sortBy === "oldest"
+//             ? { date: 1 }
+//             : null
+//         );
+//     } else if (req.query.status === "all" && req.query.type !== "all") {
+//       jobsList = await Job.find({
+//         type: req.query.type,
+//         position: regex,
+//       })
+//         .limit(limit)
+//         .skip(startIndex)
+//         .sort(
+//           sortBy === "a-z"
+//             ? { position: 1 }
+//             : sortBy === "z-a"
+//             ? { position: -1 }
+//             : sortBy === "latest"
+//             ? { date: -1 }
+//             : sortBy === "oldest"
+//             ? { date: 1 }
+//             : null
+//         );
+//     } else if (req.query.status !== "all" && req.query.type === "all") {
+//       jobsList = await Job.find({
+//         status: req.query.status,
+//         position: regex,
+//       })
+//         .limit(limit)
+//         .skip(startIndex)
+//         .sort(
+//           sortBy === "a-z"
+//             ? { position: 1 }
+//             : sortBy === "z-a"
+//             ? { position: -1 }
+//             : sortBy === "latest"
+//             ? { date: -1 }
+//             : sortBy === "oldest"
+//             ? { date: 1 }
+//             : null
+//         );
+//     }
+//     const pages = Math.ceil(jobsCount / limit);
+//     if (!jobsList) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Cannot load jobs" });
+//     }
+//     return res
+//       .status(200)
+//       .json({ success: true, data: jobsList, pages: pages });
+//   } catch ({ message }) {
+//     return res.status(500).json({ success: false, message: message });
+//   }
+// };
 
 const getOneJob = async (req, res) => {
   try {
@@ -183,4 +228,10 @@ const deleteJob = async (req, res) => {
   }
 };
 
-module.exports = { getAllJobs, getOneJob, addNewJob, updateJob, deleteJob };
+module.exports = {
+  getAllJobs,
+  getOneJob,
+  addNewJob,
+  updateJob,
+  deleteJob,
+};

@@ -23,10 +23,10 @@ const type = [
   { id: 5, title: "internship" },
 ];
 const sort = [
-  { id: 1, title: "latest" },
-  { id: 2, title: "oldest" },
-  { id: 3, title: "a-z" },
-  { id: 4, title: "z-a" },
+  { id: 1, value:"-date", title: "latest" },
+  { id: 2, value:"date", title: "oldest" },
+  { id: 3, value:"position", title: "a-z" },
+  { id: 4, value:"-position", title: "z-a" },
 ];
 
 const AllJobs = () => {
@@ -42,7 +42,7 @@ const AllJobs = () => {
   useEffect(() => {
     sendRequest(
       {
-        url: `http://localhost:4000/api/v1/jobs?page=${page}&status=${statusFilter}&type=${typeFilter}&sort=${sortBy}&search=${search}`,
+        url: `http://localhost:4000/api/v1/jobs/?page=${page}&status=${statusFilter}&type=${typeFilter}&sort=${sortBy}&search=${search}`,
       },
       (data) => {
         setJobs(data?.data?.data);
@@ -58,6 +58,7 @@ const AllJobs = () => {
     setTypeFilter(e.target.value);
   };
   const sortHandler = (e) => {
+    console.log(e.target.value)
     setSortBy(e.target.value);
   };
   const searchHandler = (e) => {

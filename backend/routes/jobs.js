@@ -10,7 +10,6 @@ const {
 
 router.route("/").get(getAllJobs).post(addNewJob);
 router.route("/:id").get(getOneJob).put(updateJob).delete(deleteJob);
-
 // router.get("/", getAllJobs);
 
 // router.get("/:id", getOneJob);
